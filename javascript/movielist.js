@@ -1,17 +1,34 @@
-var moviesApp = angular.module('MoviesApp', ['myCollisterator']);
-var myCollisterator = angular.module('myCollisterator', ['ngResource']);
+var moviesApp = angular.module('moviesApp', ['ngResource']);
 
-myCollisterator.factory('Movies', ['$resource', function($resource) {
-  $http.defaults.useXDomain = true;
-  return $resource('http://localhost:3000/items/qPCnKiaz7lXI1V95SShmiw.json', {}, {
-      query: {method:'GET'},
-      post: {method:'POST'},
-      update: {method:'PUT'},
-      remove: {method: 'DELETE'}
-    });
+moviesApp.config(['$httpProvider', function($httpProvider) {
+  $httpProvider.defaults.useXDomain = true;
+  //delete $httpProvider.defaults.headers.common['X-Requested-With'];
 }]);
 
+moviesApp.factory('moviesFactory', function($http) {
+  return {
+    getMovies: function() {
+      return $http.get('http://localhost:3000/items/3.json').error(function(data, status, headers, config) {
+        console.log("error? what error?");
+      });
+    }
+  };
+});
+
 moviesApp.controller('moviesController', function($scope, moviesFactory) {
-  $scope.movies = Movies.query();
+  $scope.movies = function () {
+    var movies = [];
+    moviesFactory.getMovies().success(function(data, status) {
+      console.log("status: " + status);
+      console.log(data);
+    });
+    for (var i=0; i < request.children.length; i++) {
+      movie = request.children[i];
+      movies.push(movie.data);
+      console.log(movie);
+    }   
+    return movies;
+  };
+
 });
 
