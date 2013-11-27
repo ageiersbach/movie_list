@@ -1,70 +1,41 @@
 <!DOCTYPE html>
-<html ng-app="moviesApp">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>MovieList - An AngularJS App</title>
-        <meta name="viewport" content="width=device-width">
-        
-        <!--- angularJS -->
-          <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.js"></script>
-          <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.js"></script>       
-          <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular-resource.js"></script>
-          <script src="/javascript/movielist.js"></script>        
-        
-        <!-- Custom CSS and Fonts-->
-        <link rel="stylesheet" href="/css/movielist.css">
-    </head>
+<html ng-app="app">
 
-    <body>
-<div id="main">
-  <h2>A Movie List Example</h2>
-  <div id="movielist" ng-controller="moviesController">
-   <span>{{movies.length}} movies:</span>
-  <ul class="unstyled">
-    <li ng-repeat="movie in movies">
-      {{ movie.data.Name }}
-    </li>
-  </ul>
-  <form ng-submit="addMovie()">
-    <input type="text" ng-model="movieTitle" size="30"
-      placeholder="add new movie here">
-    <input class="btn-primary" type="submit" value="add">
-  </form>
-  </div>
-</div>
+  <head>
+    <link data-require="bootstrap-css@3.0.2" data-semver="3.0.2" rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" />
+    <link data-require="font-awesome@4.0.3" data-semver="4.0.3" rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" />
+    <script data-require="angular.js@*" data-semver="1.2.2" src="http://code.angularjs.org/1.2.2/angular.js"></script>
+    <script src="http://code.angularjs.org/1.2.2/angular-resource.js"></script>
+    <script data-require="jquery@*" data-semver="2.0.3" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script data-require="bootstrap@*" data-semver="3.0.2" src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="javascript/script.js"></script>
+  </head>
 
+  <body>
+    <div ng-controller="mycontroller">
+      <h1>Movies</h1>
+      {{mdata}}
+      <table class="table">
+        <tbody>
+          <tr>
+            <th>Votes</th>
+            <th></th>
+            <th>Movie</th>
+            <th></th>
+          </tr>
+          <tr ng-repeat="movie in movies">
+            <td>{{movie.data.votes}}</td>
+            <td><button ng-click="upVote(movie.token, $index)">
+            <i class="fa fa-thumbs-o-up"></i>
+            </button>
+            </td>
+            <td>{{movie.data.title}}</td>
+            <td><button ng-click="downVote(movie.token, $index)">
+            <i class="fa fa-thumbs-o-down"</button></td>
+          </tr>
+        </tbody>      </table>
+    </div>
+  </body>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        </div>
-    </body>
 </html>
