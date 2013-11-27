@@ -6,23 +6,20 @@ var parent_id = 'Yq9pgW3EML4CAQHYkMk5ow';
 app.factory('Movies', function($resource) {
   var MoviesService = $resource(root + '/:id.json', {id: '@id'}, {
     'get': {method: 'GET'},
-    'update':{method: 'PUT'}
+    'update':{method: 'PUT'},
+    'create':{method: 'POST'}
   });
   return MoviesService;
 });
 
-app.controller('mycontroller', function($scope, $resource, Movies) {
+app.controller('mycontroller', function($scope, Movies) {
   
-  //var Movies = $resource(root + '/' + parent_id + '.json', {});  
   var mdata = Movies.get({id: parent_id});
   mdata.$promise.then(function(data) {
     $scope.movies = data.children;
   }); 
   
-  //var Item = $resource(root + '/:id.json');
   $scope.upVote = function (movie_id, index) {
-    
-    //console.log(movie_id)
     var item = Movies.get({id:movie_id});
     item.$promise.then(function(data) {
       var v = parseInt(item.data.votes) + 1;
@@ -40,6 +37,18 @@ app.controller('mycontroller', function($scope, $resource, Movies) {
       movie.$update({id:movie_id});
       $scope.movies[index].data.votes = votes;
     })
-    
+  };
+  $scope.addMovie = function(movie_name) {
+    //alert("let's add " + movie_name);  
+    var item = {"item":{"parent_id": parent_id}};
+    var movie = Movies.create(item);
+    var token = "";
+    movie.$promise.then(function(data) {
+      token = movie.token;
+      movie.data.title = movie_name;
+      movie.data.votes = 0;
+      movie.$update({id:token});
+    });
+    $scope.movies.push(movie);
   };
 });
